@@ -61,21 +61,23 @@ function test(data) {
 
 const server = net.createServer((socket) => {
   console.log('Client connected');
-  socket.on('data',(data) => {
-    console.log(`${socket.remoteAddress}:${socket.remotePort}`)
-    console.log(`Received data from client ${data}`);
-    var str = data.toString();
-    var cstr = str.split(',');
-    //socket.write(`$1lB,16,1,cstr[23],\n`);
-    socket.write(`$1lv,4,\n`)
-    console.log(`Received data from client ${data}`);
-    if(cstr[0] == '#1v'){
-      test(str)
+  
+    
       setTimeout(function() {
-        console.log('waiting')  
-      }, 900);
-    }
-  });
+        socket.on('data',(data) => {
+          console.log(`${socket.remoteAddress}:${socket.remotePort}`)
+          console.log(`Received data from client ${data}`);
+          var str = data.toString();
+          var cstr = str.split(',');
+          //socket.write(`$1lB,16,1,cstr[23],\n`);
+          socket.write(`$1lv,4,\n`)
+          console.log(`Received data from client ${data}`);
+          console.log('waiting')
+        if(cstr[0] == '#1v'){
+          test(str)
+        }
+      });
+  }, 15000);
 
   socket.on('end', () => {
     console.log('Client disconnected');
